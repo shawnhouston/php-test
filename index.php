@@ -83,6 +83,25 @@
       <input type="submit" name="uploadBtn" value="Upload" />
     </form>
 
+    <h2>Uploaded Files</h2>
+    <p>
+    <?php
+      $uploadFileDir = '/opt/app-root/files/';
+      $files = scandir($uploadFileDir);
+      foreach($files as &$file)
+      {
+        if($file != '.' && $file != '..')
+        {
+          echo "$file <br />";
+        }
+      }
+    ?>
+    </p>
 
   </body>
 </html>
+
+
+
+
+
