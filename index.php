@@ -59,7 +59,15 @@
   </head>
   <body>
 
-  <h1>Test RWX PV for application scaling</h1>
+    <h1>Test RWX PV for application scaling</h1>
+  
+    <p>
+      <?php 
+
+        echo gethostname(); 
+
+      ?>
+    </P>
 
     <?php 
 
