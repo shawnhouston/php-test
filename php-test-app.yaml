@@ -51,6 +51,12 @@ spec:
       uri: 'http://gitlab.libvirt8/shouston/php-test.git'
     contextDir: /
   triggers:
+    - github:
+        secret: 'SuperSecretPassword'
+      type: GitHub
+    - generic:
+        secret: 'SuperSecretPassword'
+      type: Generic
     - type: ImageChange
     - type: ConfigChange
   runPolicy: Serial
