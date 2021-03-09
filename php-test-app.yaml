@@ -1,0 +1,180 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: webroot
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1G
+  storageClassName: ocs-storagecluster-cephfs
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: ImageStream
+metadata:
+  annotations:
+    description: Keeps track of changes in the application image
+  name: php-test-git
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: php-test-git
+  uid: 11b8b281-7530-4edb-b61c-5035dd56122f
+  creationTimestamp: '2021-03-09T14:29:16Z'
+  generation: 2
+  labels:
+    app: php-test-git
+    app.kubernetes.io/component: php-test-git
+    app.kubernetes.io/instance: php-test-git
+    app.kubernetes.io/name: php
+    app.kubernetes.io/part-of: php-test-git-app
+    app.openshift.io/runtime: php
+    app.openshift.io/runtime-version: 7.4-ubi8
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'php-test-git:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'php:7.4-ubi8'
+  postCommit: {}
+  source:
+    type: Git
+    git:
+      uri: 'http://gitlab.libvirt8/shouston/php-test.git'
+    contextDir: /
+  triggers:
+    - type: ImageChange
+    - type: ConfigChange
+  runPolicy: Serial
+---
+kind: DeploymentConfig
+apiVersion: apps.openshift.io/v1
+metadata:
+  name: php-test-git
+  labels:
+    app: php-test-git
+    app.kubernetes.io/component: php-test-git
+    app.kubernetes.io/instance: php-test-git
+    app.kubernetes.io/name: php
+    app.kubernetes.io/part-of: php-test-git-app
+    app.openshift.io/runtime: php
+    app.openshift.io/runtime-version: 7.4-ubi8
+spec:
+  strategy:
+    type: Rolling
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 600
+      maxUnavailable: 25%
+      maxSurge: 25%
+    resources: {}
+    activeDeadlineSeconds: 21600
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - php-test-git
+        from:
+          kind: ImageStreamTag
+          name: 'php-test-git:latest'
+    - type: ConfigChange
+  replicas: 1
+  revisionHistoryLimit: 10
+  test: false
+  selector:
+    app: php-test-git
+    deploymentconfig: php-test-git
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: php-test-git
+        deploymentconfig: php-test-git
+    spec:
+      volumes:
+        - name: webroot-mount
+          persistentVolumeClaim:
+            claimName: webroot
+      containers:
+        - name: php-test-git
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: webroot-mount
+              mountPath: /opt/app-root/files
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: php-test-git
+  labels:
+    app: php-test-git
+    app.kubernetes.io/component: php-test-git
+    app.kubernetes.io/instance: php-test-git
+    app.kubernetes.io/name: php
+    app.kubernetes.io/part-of: php-test-git-app
+    app.openshift.io/runtime: php
+    app.openshift.io/runtime-version: 7.4-ubi8
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: 8443-tcp
+      protocol: TCP
+      port: 8443
+      targetPort: 8443
+  selector:
+    app: php-test-git
+    deploymentconfig: php-test-git
+  type: ClusterIP
+  sessionAffinity: None
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: php-test-git
+  labels:
+    app: php-test-git
+    app.kubernetes.io/component: php-test-git
+    app.kubernetes.io/instance: php-test-git
+    app.kubernetes.io/name: php
+    app.kubernetes.io/part-of: php-test-git-app
+    app.openshift.io/runtime: php
+    app.openshift.io/runtime-version: 7.4-ubi8
+spec:
+  to:
+    kind: Service
+    name: php-test-git
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  wildcardPolicy: None
