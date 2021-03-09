@@ -22,9 +22,6 @@ kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   name: php-test-git
-  uid: 11b8b281-7530-4edb-b61c-5035dd56122f
-  creationTimestamp: '2021-03-09T14:29:16Z'
-  generation: 2
   labels:
     app: php-test-git
     app.kubernetes.io/component: php-test-git
