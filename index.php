@@ -67,6 +67,7 @@
         echo gethostname(); 
 
       ?>
+    
     </P>
 
     <?php 
