@@ -32,7 +32,6 @@ metadata:
     app.kubernetes.io/name: php
     app.kubernetes.io/part-of: php-test-git-app
     app.openshift.io/runtime: php
-    app.openshift.io/runtime-version: 7.4-ubi8
 spec:
   nodeSelector: null
   output:
