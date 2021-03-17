@@ -17,6 +17,7 @@ metadata:
   annotations:
     description: Keeps track of changes in the application image
   name: php-test-git
+spec: {}
 ---
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
