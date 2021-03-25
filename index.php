@@ -101,7 +101,7 @@
       {
         if($file != '.' && $file != '..')
         {
-          echo "$file <br />";
+          echo "$file <br />\n";
         }
       }
     ?>
