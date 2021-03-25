@@ -94,17 +94,17 @@
 
     <h2>Uploaded Files</h2>
     <p>
-    <?php
-      $uploadFileDir = '/opt/app-root/files/';
-      $files = scandir($uploadFileDir);
-      foreach($files as &$file)
-      {
-        if($file != '.' && $file != '..')
-        {
-          print "$file <br />\n";
-        }
-      }
-    ?>
+<?php
+  $uploadFileDir = '/opt/app-root/files/';
+  $files = scandir($uploadFileDir);
+  foreach($files as &$file)
+  {
+    if($file != '.' && $file != '..')
+    {
+      print "    $file <br />\n";
+    }
+  }
+?>
     </p>
 
   </body>
