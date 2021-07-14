@@ -13,9 +13,10 @@ if (isset($_POST['uploadBtn']) && $_POST['uploadBtn'] == 'Upload')
     $fileType = $_FILES['uploadedFile']['type'];
     $fileNameCmps = explode(".", $fileName);
     $fileExtension = strtolower(end($fileNameCmps));
+    $fileUploadTime = time();
  
     // sanitize file-name
-    $newFileName = md5(time()) . '-' . preg_replace("/[^a-z0-9\.]/", "", strtolower($fileName));
+    $newFileName = md5($fileUploadTime . $fileName) . '-' . preg_replace("/[^a-z0-9\.]/", "", strtolower($fileName));
  
     // check if file has one of the following extensions
     $allowedfileExtensions = array('jpg', 'gif', 'png', 'zip', 'txt', 'xls', 'doc', 'pdf');
