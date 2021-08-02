@@ -38,7 +38,7 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: 'php-test-git:latest'
+      name: 'php-test-git:0.9'
   resources: {}
   successfulBuildsHistoryLimit: 5
   failedBuildsHistoryLimit: 5
@@ -96,7 +96,7 @@ spec:
           - php-test-git
         from:
           kind: ImageStreamTag
-          name: 'php-test-git:latest'
+          name: 'php-test-git:0.9'
     - type: ConfigChange
   replicas: 1
   revisionHistoryLimit: 10
