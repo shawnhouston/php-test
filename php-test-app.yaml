@@ -38,7 +38,7 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: 'php-test-git:0.9'
+      name: 'php-test-git:latest'
   resources: {}
   successfulBuildsHistoryLimit: 5
   failedBuildsHistoryLimit: 5
@@ -47,22 +47,12 @@ spec:
     sourceStrategy:
       from:
         kind: DockerImage
-        name: 'quay.libvirt8:8080/shouston/php:7.4-ubi8'
+        name: 'registry.redhat.io/rhel8/php-74'
   postCommit: {}
   source:
     type: Git
     git:
-      uri: 'http://gitlab.libvirt8/shouston/php-test.git'
-    contextDir: /
-  triggers:
-    - github:
-        secret: 'SuperSecretPassword'
-      type: GitHub
-    - generic:
-        secret: 'SuperSecretPassword'
-      type: Generic
-    - type: ImageChange
-    - type: ConfigChange
+      uri: 'https://github.com/shawnhouston/php-test.git'
   runPolicy: Serial
 ...
 ---
@@ -96,7 +86,7 @@ spec:
           - php-test-git
         from:
           kind: ImageStreamTag
-          name: 'php-test-git:0.9'
+          name: 'php-test-git:latest'
     - type: ConfigChange
   replicas: 1
   revisionHistoryLimit: 10
