@@ -53,6 +53,9 @@ spec:
     type: Git
     git:
       uri: 'https://github.com/shawnhouston/php-test.git'
+  triggers:
+  - type: ImageChange
+  - type: ConfigChange
   runPolicy: Serial
 ...
 ---
