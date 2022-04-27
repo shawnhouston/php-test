@@ -5,11 +5,13 @@ metadata:
   name: webroot
 spec:
   accessModes:
-    - ReadWriteMany
+#    - ReadWriteMany
+    - ReadWriteOnly
   resources:
     requests:
       storage: 1G
-  storageClassName: ocs-storagecluster-cephfs
+#  storageClassName: ocs-storagecluster-cephfs
+  storageClassName: ocs-storagecluster-rbdmirror
   volumeMode: Filesystem
 ...
 ---
