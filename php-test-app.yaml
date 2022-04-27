@@ -3,15 +3,15 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: webroot
+  labels:
+    appname: php-test-app
 spec:
   accessModes:
-#    - ReadWriteMany
-    - ReadWriteOnly
+    - ReadWriteMany
   resources:
     requests:
       storage: 1G
-#  storageClassName: ocs-storagecluster-cephfs
-  storageClassName: ocs-storagecluster-rbdmirror
+  storageClassName: ocs-storagecluster-cephfs
   volumeMode: Filesystem
 ...
 ---
